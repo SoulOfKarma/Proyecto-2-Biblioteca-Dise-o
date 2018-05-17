@@ -45,9 +45,60 @@ class Login_model extends CI_Model {
         {
             return false;
         }
+    }
 
+    public function getAutores()
+    {
+        $query = $this->db->query('select * from autor');
         
-      
-    
+        if($query->num_rows()>0)
+        {
+            foreach($query->result() as $row)
+            $arrDatos[htmlspecialchars($row->id_autor, ENT_QUOTES)] = 
+            htmlspecialchars($row->nombre_autor, ENT_QUOTES);
+            
+                    $query->free_result();
+                    return $arrDatos;
+
+        }
+       
+
+    }
+
+
+    public function getEditorial()
+    {
+        $query = $this->db->query('select * from editorial');
+        
+        if($query->num_rows()>0)
+        {
+            foreach($query->result() as $row)
+            $arrDatos[htmlspecialchars($row->id_editorial, ENT_QUOTES)] = 
+            htmlspecialchars($row->nombre_editorial, ENT_QUOTES);
+            
+                    $query->free_result();
+                    return $arrDatos;
+
+        }
+       
+
+    }
+
+    public function getTipoMaterial()
+    {
+        $query = $this->db->query('select * from tipomaterial');
+        
+        if($query->num_rows()>0)
+        {
+            foreach($query->result() as $row)
+            $arrDatos[htmlspecialchars($row->id_tipomaterial, ENT_QUOTES)] = 
+            htmlspecialchars($row->nombre_tipomat, ENT_QUOTES);
+            
+                    $query->free_result();
+                    return $arrDatos;
+
+        }
+       
+
     }
 }

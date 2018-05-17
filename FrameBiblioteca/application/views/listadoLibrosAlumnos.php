@@ -88,8 +88,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 <div class="container">
 <div class="row">
+<div class="col-md-2">
+<form action="<?= base_url() ?>Login/filtrarPorBusquedaAlum" method="post">
+<label for="">Buscar Por Libro</label><br>
+<input type="text" class="form-control" name="fillibro" id="fillibro" required="required"><br>
+<input type="submit" class="btn btn-success"  value="Filtrar" name="validarfil" id="validarfil"><br>
+<label for="nomaut">Lista Autores : </label>
+		
+		<select name="selAutor" id="selAutor" class="form-control">
+		 <?php foreach ($arrAutor as $i => $nombre_autor)   {
+		  echo '<option name="',$i,'" id="',$i,'" value="',$i,'">',$nombre_autor,'</option>';
+		}  ?>
+			</select>
+<br>
+<input type="button" name="idbook" value="Modificar Libro" onclick="autor()" class="btn btn-danger" id="idbook">
+<br>
+<label for="nomaut">Lista Editoriales : </label>
+<select name="selEditorial" id="selEditorial" class="form-control" >
+		 <?php foreach ($arrEditorial as $a => $nombre_editorial)   
+		  echo '<option name="',$a,'" id="',$a,'" value="',$a,'">',$nombre_editorial,'</option>';
+		   ?>
+			</select>
+<br>
+<input type="button" name="idbook" value="Modificar a" onclick="editorial()" class="btn btn-danger" id="idbook">
+<br>
+<label for="nomaut">Lista Tipo Material : </label>
+<select name="selTipoMaterial" id="selTipoMaterial" class="form-control" >
+		 <?php foreach ($arrTipoMaterial as $e => $nombre_tipomat)   {
+		  echo '<option name="',$e,'" id="',$e,'" value="',$e,'">',$nombre_tipomat,'</option>';
+		}   ?>
+			</select>
+<br>
+<input type="button" name="idbookf" value="Modificar s" onclick="material()" class="btn btn-danger" id="idbookf">
+<br>
 
-<div class="col-md-12">
+</form>
+</div>
+<div class="col-md-10">
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -98,7 +133,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <th scope="col">Autor</th>
 	  <th scope="col">Editorial</th>
 	  <th scope="col">Tipo Material</th>
-	  <th scope="col">Codigo Isbn?</th>
+	  <th scope="col">Codigo Isbn</th>
 	  <th scope="col">Disponible?</th>
     </tr>
   </thead>
@@ -124,4 +159,59 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 </div>
 </body>
+<script type="text/javascript"> 
+function autor() 
+{ 
+	var x = document.getElementById('selAutor');
+
+	var form = document.createElement('form');
+    document.body.appendChild(form);
+    form.method = 'post';
+    form.action = "<?= base_url() ?>Login/filtrarPorBusquedaAutor";
+    
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'idautors';
+        input.value = x.value;
+        form.appendChild(input);
+    
+    form.submit();
+} 
+
+function editorial() 
+{ 
+	var g = document.getElementById('selEditorial');
+
+	var form = document.createElement('form');
+    document.body.appendChild(form);
+    form.method = 'post';
+    form.action = "<?= base_url() ?>Login/filtrarPorBusquedaMaterial";
+    
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'idTipoMaterials';
+        input.value = g.value;
+        form.appendChild(input);
+    
+    form.submit();
+} 
+function material() 
+{ 
+	var x = document.getElementById('selTipoMaterial');
+
+	var form = document.createElement('form');
+    document.body.appendChild(form);
+    form.method = 'post';
+    form.action = "<?= base_url() ?>Login/filtrarPorBusquedaEditorial";
+    
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'ideditorials';
+        input.value = x.value;
+        form.appendChild(input);
+    
+    form.submit();
+} 
+</script>
+
 </html>
