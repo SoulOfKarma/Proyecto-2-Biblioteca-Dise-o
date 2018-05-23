@@ -185,11 +185,11 @@ function editorial()
 	var form = document.createElement('form');
     document.body.appendChild(form);
     form.method = 'post';
-    form.action = "<?= base_url() ?>Login/filtrarPorBusquedaMaterial";
+    form.action = "<?= base_url() ?>Login/filtrarPorBusquedaEditorial";
     
         var input = document.createElement('input');
         input.type = 'hidden';
-        input.name = 'idTipoMaterials';
+        input.name = 'ideditorials';
         input.value = g.value;
         form.appendChild(input);
     
@@ -202,11 +202,11 @@ function material()
 	var form = document.createElement('form');
     document.body.appendChild(form);
     form.method = 'post';
-    form.action = "<?= base_url() ?>Login/filtrarPorBusquedaEditorial";
+    form.action = "<?= base_url() ?>Login/filtrarPorBusquedaMaterial";
     
         var input = document.createElement('input');
         input.type = 'hidden';
-        input.name = 'ideditorials';
+        input.name = 'idTipoMaterials';
         input.value = x.value;
         form.appendChild(input);
     

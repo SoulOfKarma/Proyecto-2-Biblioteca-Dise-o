@@ -59,6 +59,121 @@ class Cliente extends CI_Controller {
 
     }
 
+    public function buscarUsuarioDevolucion()
+    {
+        $user = $this->session->user;
+        $pass = $this->session->pass;
+        if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
+        {
+           
+            $this->load->view('buscarUsuarioDevolucion');
+        }
+        else
+        {
+            redirect('login');
+        }
+
+
+    }
+
+    public function libroPrestado()
+    {
+        $this->load->model('cliente_model');
+        $fechaPres = $this->input->post('fechapres');
+        $fechaDev = $this->input->post('fechadev');
+        $nomusu = $this->input->post('nomlib');
+        $apeusu = $this->input->post('apelib');
+        $rutusu = $this->input->post('rutusu');
+        $idlibro = $this->input->post('selLibro');
+        $val = $this->cliente_model->buscarLibroPorId($idlibro);
+
+        $cant = $this->cliente_model->buscarDatosPrestamo($rutusu);
+        
+        if($cant==0)
+        {
+            $data = array(
+                'nombre_prestado' => $nomusu,
+                'apellido_prestado' => $apeusu,
+                'fecha_prestamo' => $fechaPres,
+                'fecha_devolucion' => $fechaDev,
+                'cantidad_prestamo' => 1,
+                'idlibroprestado' => $idlibro,
+                'nombre_libroprestado' => $val,
+                'rut_prestamo' => $rutusu,
+                'id_disp_pres' => 2
+                  );
+
+                  $valor= $this->cliente_model->ingresarPrestamo($data);
+                  $this->cliente_model->updateDisponibilidad($idlibro);
+        }
+        else if($cant==1)
+        {
+            $data = array(
+                'nombre_prestado' => $nomusu,
+                'apellido_prestado' => $apeusu,
+                'fecha_prestamo' => $fechaPres,
+                'fecha_devolucion' => $fechaDev,
+                'cantidad_prestamo' => $cant+1,
+                'idlibroprestado' => $idlibro,
+                'nombre_libroprestado' => $val,
+                'rut_prestamo' => $rutusu,
+                'id_disp_pres' => 2
+                  );
+
+                  $valor= $this->cliente_model->ingresarPrestamo($data);
+                  $this->cliente_model->updateDisponibilidad($idlibro);
+            
+        }
+       
+        
+        $user = $this->session->user;
+        $pass = $this->session->pass;
+        if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
+        {
+           
+            $this->load->view('libroPrestado');
+        }
+        else
+        {
+            redirect('login');
+        }
+
+
+    }
+
+    public function libroDevuelto()
+    {
+        $this->load->model('cliente_model');
+        $idpres = $this->input->post('idprestamo');
+        $idlib = $this->cliente_model->retornarLibro($idpres);
+        $cant = $this->cliente_model->retornarCantidad($idpres);
+
+        $val = $this->cliente_model->updateDevuelto($idpres,$cant);
+
+        $this->cliente_model->updateDevueltoLibro($idlib);
+       
+      if($val==1)
+      {
+        $user = $this->session->user;
+        $pass = $this->session->pass;
+        if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
+        {
+           
+            $this->load->view('indexCliente');
+        }
+        else
+        {
+            redirect('login');
+        }
+      }
+      else
+      {
+        $this->load->view('buscarUsuarioDevolucion');
+      }
+
+
+    }
+
     public function validarUsuario()
     {
         $rut_usu = $this->input->post('rut');
@@ -67,11 +182,16 @@ class Cliente extends CI_Controller {
         
         $sql = $this->db->query("
         SELECT libros.id_libro,libros.nombre_libro FROM libros")->result();
+        $this->db->where('usuarios.rut_usuario',$rut_usu);
+        $this->db->where('usuarios.id_perfil',3);
+        $q = $this->db->get('usuarios');
         $val = $this->cliente_model->validarBuscarUsuario($rut_usu);
         if($val == 1)
         {
             $data = [
-                'libros' => $sql
+                'libros' => $sql,
+                'usuario' =>  $q->result()
+
              //   'usuario' => $this->cliente_model->buscarUsuario($rut_usu)
             ];
             //$data['arrLibros'] = $this->cliente_model->buscarLibro();
@@ -91,6 +211,46 @@ class Cliente extends CI_Controller {
         else
         { 
             $this->load->view('buscarUsuarioPrestamo');
+        }
+    }
+
+    public function validarUsuarioDev()
+    {
+        $rut_usu = $this->input->post('rut');
+        $this->load->model('cliente_model');
+       // $data = $this->cliente_model->buscarUsuario($rut_usu);
+        
+        
+        
+        $val = $this->cliente_model->validarBuscarUsuario($rut_usu);
+        if($val == 1)
+        {
+                 $this->db->where('rut_prestamo',$rut_usu);
+                 $this->db->where('id_disp_pres',2);
+            $q = $this->db->get('prestamos');
+        $this->load->model('cliente_model');
+            $data = [
+               'prestamos' => $q->result()
+
+             //   'usuario' => $this->cliente_model->buscarUsuario($rut_usu)
+            ];
+            //$data['arrLibros'] = $this->cliente_model->buscarLibro();
+           // $data['arrCliente'] = $this->cliente_model->buscarUsuario($rut_usu);
+
+            $user = $this->session->user;
+            $pass = $this->session->pass;
+            if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
+            {
+            $this->load->view('devolucionLibros',$data);
+            }
+            else
+            {
+            $this->load->view('buscarUsuarioDevolucion');
+            }
+        }
+        else
+        { 
+            $this->load->view('buscarUsuarioDevolucion');
         }
     }
 
@@ -216,8 +376,7 @@ class Cliente extends CI_Controller {
         $this->db->join('disp_libros','libros.id_disp_libros = disp_libros.id_disp_libros');
         
       //  $this->db->where('nombre_libro',$fillibro);
-        $this->db->where('libros.id_autor',$fillibro);
-        $q = $this->db->get('libros');
+       
 
         
         

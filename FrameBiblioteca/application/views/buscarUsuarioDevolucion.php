@@ -93,9 +93,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="col-md-2">
 </div>
 <div class="col-md-8">
-
-
-
+<form action="validarUsuarioDev" method="post"><br><br>
+<label for="usuname">Ingrese Rut de Usuario Que hace devolucion :</label>
+<input type="text" id="rut" name="rut" class="form-control"><br>
+<input type="submit" value="Buscar" class="btn btn-success">
+</form>
 </div>
 <div class="col-md-2">
 </div>

@@ -82,6 +82,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <form class="form-inline">
   <a class="btn btn-outline-danger btn-sm" href="<?= base_url() ?>Cliente">Inicio Cliente</a>
   <a class="btn btn-outline-success btn-sm" href="<?= base_url() ?>Cliente/listadoLibrosCliente">Listado Libros</a>
+  <a class="btn btn-outline-danger btn-sm" href="<?= base_url() ?>Cliente/buscarUsuarioDevolucion">Devolucion de Libros</a>
   <a class="btn btn-outline-success btn-sm" href="<?= base_url() ?>Cliente/buscarUsuarioPrestamo">Prestamo De Libros</a>
 	<a class="btn btn-outline-success btn-sm" href="<?= base_url() ?>Login">Logout</a>
   </form>

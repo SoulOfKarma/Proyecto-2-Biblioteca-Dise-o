@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<meta charset="utf-8">
 	<title>Login de Usuario</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-
+	
 
 	<style type="text/css">
 
@@ -82,6 +82,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <form class="form-inline">
   <a class="btn btn-outline-danger btn-sm" href="<?= base_url() ?>Cliente">Inicio Cliente</a>
   <a class="btn btn-outline-success btn-sm" href="<?= base_url() ?>Cliente/listadoLibrosCliente">Listado Libros</a>
+  <a class="btn btn-outline-danger btn-sm" href="<?= base_url() ?>Cliente/buscarUsuarioDevolucion">Devolucion de Libros</a>
   <a class="btn btn-outline-success btn-sm" href="<?= base_url() ?>Cliente/buscarUsuarioPrestamo">Prestamo De Libros</a>
 	<a class="btn btn-outline-success btn-sm" href="<?= base_url() ?>Login">Logout</a>
   </form>
@@ -92,28 +93,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="col-md-2">
 </div>
 <div class="col-md-8">
-<form action="<?= base_url() ?>Admin/updateLibro" method="post"><br>
-        <label for="nomlib">Nombre Usuario: </label>
-		<?php foreach ($arrCliente as $a => $nombre_usuario){ ?>
-         <input type="text" id="nomlib" name="nomlib" value="<?php echo $nombre_usuario; ?>">
-		 <?php }
-		 ?> <br>
-         <label for="nomlib">Apellido Usuario: </label>
-          <?php foreach ($arrCliente as $a => $apellido_usuario){ ?>
-         <input type="text" id="apelib" name="apelib" value="<?php echo $apellido_usuario; ?>">
-		 <?php }
-		 ?> <br>
+<form action="<?= base_url() ?>Cliente/libroPrestado" method="post"><br>
 
-		 <label for="nomaut">Lista Libros Disponibles : </label>
+        <label for="">Nombre Usuario: </label>
+		<?php foreach ($usuario as $a){ ?>
+         <input type="text" readonly="readonly" class="form-control" id="nomlib" name="nomlib" value="<?php echo $a->nombre_usuario ?>">
+		 <?php }
+		 ?> 
+		 <?php foreach ($usuario as $a){ ?>
+         <input type="hidden" class="form-control" id="rutusu" name="rutusu" value="<?php echo $a->rut_usuario ?>">
+		 <?php }
+		 ?> 
+		 <br>
+         <label for="">Apellido Usuario: </label>
+          <?php foreach ($usuario as $a){ ?>
+         <input type="text" readonly="readonly" class="form-control" id="apelib" name="apelib" value="<?php echo $a->apellido_usuario; ?>">
+		 <?php }
+		 ?> <br>
+		 <label for="">Fecha Prestamo: </label>
+		 <input type="date" name="fechapres" id="fechapres"  class="form-control">
+		  <br>
+		  <label for="">Fecha Devolucion(No mas de 5 dias): </label>
+          <input type="date" name="fechadev" id="fechadev" class="form-control">
+		  <br>
+		 <label for="">Lista Libros Disponibles : </label>
 		
-         <select name="selLibro">
+         <select name="selLibro" id="selLibro" class="form-control">
 		  <?php foreach ($libros as $i => $libro)   
-		   echo '<option name="',$i,'" id="',$i,'" value="',$i,'">',$libro->nombre_libro,'</option>';
+		   echo '<option name="',$libro->id_libro,'" id="',$libro->id_libro,'" value="',$libro->id_libro,'">',$libro->nombre_libro,'</option>';
 		    ?>
 			 </select>
 <br>
 
-         <input type="submit" value="Generar Prestamo de Libros" class="btn btn-success" id="ir">
+        <input type="submit" name="idbookf" value="Prestar" onclick="datoLibro()" class="btn btn-danger" id="idbookf">
          </form>
 </div>
 <div class="col-md-2">
@@ -121,4 +133,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 </div>
 </body>
+<script type="text/javascript">
+          var today = new Date().toISOString().split('T')[0];
+    document.getElementsByName("fechapres")[0].setAttribute('min', today);
+    </script>
+	<script type="text/javascript">
+          var today = new Date().toISOString().split('T')[0];
+    document.getElementsByName("fechadev")[0].setAttribute('min', today);
+    </script>
 </html>

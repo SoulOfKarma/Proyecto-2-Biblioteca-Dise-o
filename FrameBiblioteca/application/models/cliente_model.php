@@ -47,6 +47,28 @@ class Cliente_Model extends CI_Model {
 
     }
 
+    public function buscarLibroPorId($val)
+    {
+        $this->db->where('id_libro',$val);
+        $q = $this->db->get('libros');
+        $data = $q->result_array();
+        
+        if($q->num_rows()>0)
+        {
+            foreach($q->result() as $row)
+            $arrDatos[htmlspecialchars($row->id_libro, ENT_QUOTES)] = 
+            htmlspecialchars($row->nombre_libro, ENT_QUOTES);
+            $q->free_result();
+                    return $row->nombre_libro;
+        }
+        else
+        {
+            return false;
+        }
+       
+
+    }
+
     public function buscarUsuario($rut)
     {
         $this->db->where('rut_usuario',$rut);
@@ -82,6 +104,8 @@ class Cliente_Model extends CI_Model {
        
 
     }
+
+  
 
     
 
@@ -142,6 +166,30 @@ class Cliente_Model extends CI_Model {
 
     }
 
+    public function buscarDatosPrestamo($rut)
+    {
+        
+        $this->db->where('rut_prestamo',$rut);
+        $q = $this->db->get('prestamos');
+        $data = $q->result_array();
+
+        if($q->num_rows()>0)
+        {
+           
+            foreach($q->result() as $row)
+           
+            $q->free_result();
+            return $row->cantidad_prestamo;
+
+        }
+        else
+        {
+          return 0;
+        }
+
+
+    }
+
     public function modificarLibro($data)
     {
        extract($data);
@@ -149,6 +197,82 @@ class Cliente_Model extends CI_Model {
        $this->db->update($libros,array('nombre_libro'=>$nombrelibro,'id_autor'=>$idAutor,'id_editorial'=>$idEditorial,'id_tipomaterial'=>$idTipoMat));
        
        return true;
+    }
+
+    public function ingresarPrestamo($data)
+    {
+       
+       $this->db->insert('prestamos',$data);
+       
+       return 'Correcto';
+    }
+
+    public function updateDisponibilidad($idlibro)
+    {
+       
+       $this->db->where('id_libro',$idlibro);
+       $this->db->update('libros',array('id_disp_libros'=>2));
+       
+       return true;
+    }
+
+    public function updateDevuelto($idpres,$cant)
+    {
+       
+       $this->db->where('id_prestamo',$idpres);
+       $this->db->update('prestamos',array('id_disp_pres'=>1,'cantidad_prestamo'=>$cant-1));
+       
+       return 1;
+    }
+
+    public function updateDevueltoLibro($idlibro)
+    {
+        $this->db->where('id_libro',$idlibro);
+        $this->db->update('libros',array('id_disp_libros'=>1));
+        
+        return true;
+    }
+
+    public function retornarLibro($id)
+    {
+        $this->db->where('id_prestamo',$id);
+        $q = $this->db->get('prestamos');
+        $data = $q->result_array();
+
+        if($q->num_rows()>0)
+        {
+           
+            foreach($q->result() as $row)
+           
+            $q->free_result();
+            return $row->idlibroprestado;
+
+        }
+        else
+        {
+          return 0;
+        }
+    }
+
+    public function retornarCantidad($id)
+    {
+        $this->db->where('id_prestamo',$id);
+        $q = $this->db->get('prestamos');
+        $data = $q->result_array();
+
+        if($q->num_rows()>0)
+        {
+           
+            foreach($q->result() as $row)
+           
+            $q->free_result();
+            return $row->cantidad_prestamo;
+
+        }
+        else
+        {
+          return 0;
+        }
     }
 
 }
