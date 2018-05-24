@@ -98,7 +98,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <form action="<?= base_url() ?>Admin/filtrarPorBusquedaAlum" method="post">
 <label for="">Buscar Por Libro</label><br>
 <input type="text" class="form-control" name="fillibro" id="fillibro" required="required"><br>
-<input type="submit" class="btn btn-success"  value="Filtrar" name="validarfil" id="validarfil"><br>
+<input type="submit" class="btn btn-success"  value="Filtrar Por Libro" name="validarfil" id="validarfil"><br>
 <label for="nomaut">Lista Autores : </label>
 		
 		<select name="selAutor" id="selAutor" class="form-control">
@@ -107,7 +107,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}  ?>
 			</select>
 <br>
-<input type="button" name="idbook" value="Modificar Libro" onclick="autor()" class="btn btn-danger" id="idbook">
+<input type="button" name="idbook" value="Filtrar Por Autor" onclick="autor()" class="btn btn-danger" id="idbook">
 <br>
 <label for="nomaut">Lista Editoriales : </label>
 <select name="selEditorial" id="selEditorial" class="form-control" >
@@ -116,7 +116,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		   ?>
 			</select>
 <br>
-<input type="button" name="idbook" value="Modificar a" onclick="editorial()" class="btn btn-danger" id="idbook">
+<input type="button" name="idbook" value="Filtrar Por Editorial" onclick="editorial()" class="btn btn-danger" id="idbook">
 <br>
 <label for="nomaut">Lista Tipo Material : </label>
 <select name="selTipoMaterial" id="selTipoMaterial" class="form-control" >
@@ -125,7 +125,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}   ?>
 			</select>
 <br>
-<input type="button" name="idbookf" value="Modificar s" onclick="material()" class="btn btn-danger" id="idbookf">
+<input type="button" name="idbookf" value="Filtrar Por Material" onclick="material()" class="btn btn-danger" id="idbookf">
 <br>
 
 </form>

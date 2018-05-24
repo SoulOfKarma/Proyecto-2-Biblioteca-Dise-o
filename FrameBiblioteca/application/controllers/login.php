@@ -21,6 +21,8 @@ class Login extends CI_Controller {
     
 	public function index()
 	{
+
+        
         $newdata=array(
             'user'=>'',
             'pass'=>''
@@ -61,13 +63,23 @@ class Login extends CI_Controller {
             }
             else
             {
-                
-                redirect('login');
+            
+           redirect('login');
+               
             }
         }
-        
-		$this->load->view('login');
+      
+        $mensaje = '';
+        $data = [
+            'mensaje' => $mensaje,
+          
+         ];
+  
+  
+        $this->load->view('login',$data);
     }
+
+  
 
     public function listadoLibrosAlumnos()
     {

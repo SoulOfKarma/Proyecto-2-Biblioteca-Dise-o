@@ -66,60 +66,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		box-shadow: 0 0 8px #D0D0D0;
 	}
 
-	#tlogin
+	#btnLog
 	{
-		text-align: center;
-	}
-
-	#ir
-	{
-		text-align: center;
-		margin: 0;
+	
 	}
 
 	</style>
 </head>
 <body>
 
- <nav class="navbar navbar-light bg-light justify-content-between">
-  <a class="navbar-brand">Inicio</a>
+<div id="container">
+	
+	<nav class="navbar navbar-light bg-light justify-content-between">
+  <a class="navbar-brand">Bienvenido : <?php echo $_SESSION['user']?></a>
   <form class="form-inline">
-	<a class="btn btn-outline-success" href="<?= base_url() ?>">Inicio</a>
-	<a class="btn btn-outline-success" href="<?= base_url() ?>Login">Login</a>
-    <a class="btn btn-outline-success" href="<?= base_url() ?>Login/listadoLibrosAlumnos">Listado de Libros</a>
+  <a class="btn btn-outline-danger btn-sm" href="<?= base_url() ?>Admin">Inicio Admin</a>
+	<a class="btn btn-outline-warning btn-sm" href="<?= base_url() ?>Admin/agregarAdminLibros">Agregar Libro</a>
+    <a class="btn btn-outline-secondary btn-sm" href="<?= base_url() ?>Admin/agregarAutor">Agregar Autor</a>
+    <a class="btn btn-outline-secondary btn-sm" href="<?= base_url() ?>Admin/agregarEditorial">Agregar Editorial</a>
+    <a class="btn btn-outline-secondary btn-sm" href="<?= base_url() ?>Admin/agregarTipoMaterial">Agregar Tipo Material</a>
+	<a class="btn btn-outline-info btn-sm" href="<?= base_url() ?>Admin/listarAdminLibros">Listar Libros</a>
+	<a class="btn btn-outline-dark btn-sm" href="<?= base_url() ?>Admin/eliminarAdminLibros">Eliminar Libro</a>
+	<a class="btn btn-outline-secondary btn-sm" href="<?= base_url() ?>Admin/listadoModificarLibro">Modificar Libro</a>
+	<a class="btn btn-outline-success btn-sm" href="<?= base_url() ?>Login">Logout</a>
   </form>
 </nav>
-<div id="container">
-
-	<h1 id="tlogin">Login de Usuarios</h1>
-
-	<div id="body">
-		<div class="container">
-          <div class="row">
-            <div class="col-md-2">
-
-			</div>
-			<div class="col-md-8">
-			
-				<form action="" method="post">
-			   <label for="log">User: </label>
-				<input type="text" id="user" name="user" class="form-control" required="required"><br><br>
-				<label for="log">Pass: </label>
-				<input type="password" id="pass" name="pass" class="form-control" required="required"><br><br>
-				<input type="submit" value="Ingresar" class="btn btn-success" id="ir">
-				</form>
-				<br><br>
-				<?php echo $mensaje ?>
-			</div>
-			<div class="col-md-2">
-			
-			</div>
-		  </div>
-		</div>
-	</div>
-
-	
 </div>
-
+<div class="container">
+<div class="row">
+<div class="col-md-2">
+</div>
+<div class="col-md-8">
+<?php echo $mensaje ?>
+</div>
+<div class="col-md-2">
+</div>
+</div>
+</div>
 </body>
 </html>

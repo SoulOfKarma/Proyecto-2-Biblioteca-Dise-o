@@ -46,19 +46,16 @@ class Admin extends CI_Controller {
 
     public function agregarAdminLibros()
 	{
-        $this->load->model('admin_model');
-        $datosAutor['arrAutor']=$this->admin_model->getAutores();
-        $datosAutor['arrEditorial']=$this->admin_model->getEditorial();
-        $datosAutor['arrTipoMaterial']=$this->admin_model->getTipoMaterial();
-        $datosAutor['arrDisponible']=$this->admin_model->getDisponibilidad();
-
-        
-
         $user = $this->session->user;
         $pass = $this->session->pass;
         if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
         {
 
+        $this->load->model('admin_model');
+        $datosAutor['arrAutor']=$this->admin_model->getAutores();
+        $datosAutor['arrEditorial']=$this->admin_model->getEditorial();
+        $datosAutor['arrTipoMaterial']=$this->admin_model->getTipoMaterial();
+        $datosAutor['arrDisponible']=$this->admin_model->getDisponibilidad();
             $this->load->view('agregarAdminLibros',$datosAutor);
         }
         else
@@ -71,44 +68,42 @@ class Admin extends CI_Controller {
 
     public function eliminarAdminLibros()
 	{
-        $sql = $this->db->query("
-        SELECT id_libro,nombre_libro FROM libros
-        ")->result();
-
-        $data = [
-            'libros' => $sql
-        ];
-
-
         $user = $this->session->user;
         $pass = $this->session->pass;
         if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
         {
+         $sql = $this->db->query("
+         SELECT id_libro,nombre_libro FROM libros
+         ")->result();
+
+         $data = [
+             'libros' => $sql
+         ];
             $this->load->view('eliminarAdminLibros',$data);
-        }
-        else
-        {
+         }
+         else
+         {
             redirect('login');
-        }
+         }
 
 
     }
 
     public function modificarAdminLibros()
 	{
-        $idlibro = $this->input->post('idlibro');
-       
-        $this->load->model('admin_model');
-        $datosAutor['arrAutor']=$this->admin_model->getAutores();
-        $datosAutor['arrEditorial']=$this->admin_model->getEditorial();
-        $datosAutor['arrTipoMaterial']=$this->admin_model->getTipoMaterial();
-        $datosAutor['arrDisponible']=$this->admin_model->getDisponibilidad();
-        $datosAutor['arrLibros']=$this->admin_model->devolverLibroFiltrado($idlibro);
-        $datosAutor['arrLibrosisbn']=$this->admin_model->devolverLibroIsbnFiltrado($idlibro);
         $user = $this->session->user;
-        $pass = $this->session->pass;
+         $pass = $this->session->pass;
         if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
         {
+         $idlibro = $this->input->post('idlibro');
+        
+         $this->load->model('admin_model');
+         $datosAutor['arrAutor']=$this->admin_model->getAutores();
+         $datosAutor['arrEditorial']=$this->admin_model->getEditorial();
+         $datosAutor['arrTipoMaterial']=$this->admin_model->getTipoMaterial();
+         $datosAutor['arrDisponible']=$this->admin_model->getDisponibilidad();
+         $datosAutor['arrLibros']=$this->admin_model->devolverLibroFiltrado($idlibro);
+         $datosAutor['arrLibrosisbn']=$this->admin_model->devolverLibroIsbnFiltrado($idlibro);
             $this->load->view('modificarAdminLibros',$datosAutor);
         }
         else
@@ -172,15 +167,25 @@ class Admin extends CI_Controller {
 
     public function insertAutor()
     {
-        $nombre_autor = $this->input->post('nomautor');
-        $sql = $this->db->query(
-            "insert into autor(nombre_autor) values('$nombre_autor')"
-        );
         $user = $this->session->user;
         $pass = $this->session->pass;
         if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
         {
-            $this->load->view('agregarAutor');
+        $nombre_autor = $this->input->post('nomautor');
+        $sql = $this->db->query(
+            "insert into autor(nombre_autor) values('$nombre_autor')"
+        );
+       
+        $mensaje = '<div class="alert alert-success" role="alert">
+        Autor Insertado Correctamente
+      </div>';
+        $data = [
+            'mensaje' => $mensaje,
+            
+        ];
+ 
+       
+        $this->load->view('correctoAdmin',$data);
         }
         else
         {
@@ -190,15 +195,25 @@ class Admin extends CI_Controller {
 
     public function insertTipoMaterial()
     {
-        $nombre_tipomat = $this->input->post('nomtipomaterial');
-        $sql = $this->db->query(
-            "insert into tipomaterial(nombre_tipomat) values('$nombre_tipomat')"
-        );
         $user = $this->session->user;
         $pass = $this->session->pass;
         if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
         {
-            $this->load->view('agregarTipoMaterial');
+        $nombre_tipomat = $this->input->post('nomtipomaterial');
+        $sql = $this->db->query(
+            "insert into tipomaterial(nombre_tipomat) values('$nombre_tipomat')"
+        );
+      
+        $mensaje = '<div class="alert alert-success" role="alert">
+        Tipo de Material Insertado Correctamente
+      </div>';
+        $data = [
+            'mensaje' => $mensaje,
+            
+        ];
+ 
+       
+        $this->load->view('correctoAdmin',$data);
         }
         else
         {
@@ -208,15 +223,25 @@ class Admin extends CI_Controller {
 
     public function insertEditorial()
     {
-        $nombre_editorial = $this->input->post('nomeditorial');
-        $sql = $this->db->query(
-            "insert into editorial(nombre_editorial) values('$nombre_editorial')"
-        );
         $user = $this->session->user;
         $pass = $this->session->pass;
         if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
         {
-            $this->load->view('agregarEditorial');
+        $nombre_editorial = $this->input->post('nomeditorial');
+        $sql = $this->db->query(
+            "insert into editorial(nombre_editorial) values('$nombre_editorial')"
+        );
+        
+        $mensaje = '<div class="alert alert-success" role="alert">
+        Editorial Insertada Correctamente
+      </div>';
+        $data = [
+            'mensaje' => $mensaje,
+            
+        ];
+ 
+       
+        $this->load->view('correctoAdmin',$data);
         }
         else
         {
@@ -226,6 +251,10 @@ class Admin extends CI_Controller {
 
     public function insertLibro()
     {
+        $user = $this->session->user;
+        $pass = $this->session->pass;
+        if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
+        {
         $idEditorial = $this->input->post('selEditorial');
         $idAutor = $this->input->post('selAutor');
         $idDisp = $this->input->post('seldisponible');
@@ -237,11 +266,16 @@ class Admin extends CI_Controller {
             "insert into libros(nombre_libro,id_autor,id_editorial,id_tipomaterial,id_disp_libros,codigo_isbn) values('$nombreLibro',
             '$idAutor','$idEditorial','$idTipoMat','$idDisp','$codisbn')"
         );
-        $user = $this->session->user;
-        $pass = $this->session->pass;
-        if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
-        {
-            redirect('Admin/agregarAdminLibros');
+        $mensaje = '<div class="alert alert-success" role="alert">
+            Libro Ingresado Correctamente
+          </div>';
+            $data = [
+                'mensaje' => $mensaje,
+                
+            ];
+    
+           
+            $this->load->view('correctoAdmin',$data);
         }
         else
         {
@@ -251,15 +285,38 @@ class Admin extends CI_Controller {
 
     public function deleteLibro()
     {
+        $user = $this->session->user;
+        $pass = $this->session->pass;
+        if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
+        {
         $idEditorial = $this->input->post('idlibro');
         $this->db->where('id_libro',$idEditorial);
         $this->db->delete('libros');
-        redirect('Admin/eliminarAdminLibros');
-
-    }
+        $mensaje = '<div class="alert alert-success" role="alert">
+            Libro Eliminado Correctamente
+          </div>';
+            $data = [
+                'mensaje' => $mensaje,
+                
+            ];
+    
+           
+            $this->load->view('correctoAdmin',$data);
+       // redirect('Admin/eliminarAdminLibros');
+        }
+         else
+        {
+          redirect('login');
+        }
+        }
 
     public function updateLibro()
     {
+
+        $user = $this->session->user;
+        $pass = $this->session->pass;
+        if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
+        {
         $data = array(
             'libros' => 'libros',
             'idlibro' => $this->input->post('id_libro'),
@@ -272,6 +329,7 @@ class Admin extends CI_Controller {
 
         );
         $this->load->model('admin_model');
+        $this->admin_model->modificarLibro($data);
         /*$idEditorial = $this->input->post('selEditorial');
         $idAutor = $this->input->post('selAutor');
         $idTipoMat = $this->input->post('selTipoMaterial');
@@ -284,11 +342,17 @@ class Admin extends CI_Controller {
         echo $idlibro;*/
        // $this->admin_model->modificarLibro($idEditorial,$idAutor,$idTipoMat,$nombreLibro,$idlibro);
         
-        $user = $this->session->user;
-        $pass = $this->session->pass;
-        if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass)&&$this->admin_model->modificarLibro($data))
-        {
-            redirect('Admin/listadoModificarLibro');
+       $mensaje = '<div class="alert alert-success" role="alert">
+       Libro Modificado Correctamente
+     </div>';
+       $data = [
+           'mensaje' => $mensaje,
+           
+       ];
+
+      
+       $this->load->view('correctoAdmin',$data);
+           // redirect('Admin/listadoModificarLibro');
         }
         else
         {
@@ -298,6 +362,10 @@ class Admin extends CI_Controller {
 
     public function listadoModificarLibro()
     {
+        $user = $this->session->user;
+            $pass = $this->session->pass;
+            if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
+            {
             $sql = $this->db->query("
             SELECT id_libro,nombre_libro FROM libros
             ")->result();
@@ -307,10 +375,7 @@ class Admin extends CI_Controller {
             ];
     
     
-            $user = $this->session->user;
-            $pass = $this->session->pass;
-            if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
-            {
+            
                 $this->load->view('listadoModificarLibro',$data);
             }
             else
@@ -321,6 +386,10 @@ class Admin extends CI_Controller {
 
     public function listarAdminLibros()
     {
+        $user = $this->session->user;
+            $pass = $this->session->pass;
+            if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
+            {
         $sql = $this->db->query("
         SELECT libros.id_libro,libros.nombre_libro,editorial.nombre_editorial,
         autor.nombre_autor,tipomaterial.nombre_tipomat,disp_libros.descripcion_disp,
@@ -344,13 +413,21 @@ class Admin extends CI_Controller {
 
        
             $this->load->view('listarAdminLibros',$data);
-        
+        }
+        else
+        {
+            redirect('login');
+        }
     
 
     }
 
     public function filtrarPorBusquedaAlum()
     {
+        $user = $this->session->user;
+            $pass = $this->session->pass;
+            if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
+            {
         $this->load->model('admin_model');
       /*  $sql = $this->db->query("
         SELECT libros.id_libro,libros.nombre_libro,editorial.nombre_editorial,
@@ -408,9 +485,18 @@ class Admin extends CI_Controller {
             $this->load->view('listarAdminLibros',$data);
         }
     }
+    else
+    {
+        redirect('login');
+    }
+    }
 
     public function filtrarPorBusquedaAutor()
     {
+        $user = $this->session->user;
+            $pass = $this->session->pass;
+            if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
+            {
         $this->load->model('admin_model');
       /*  $sql = $this->db->query("
         SELECT libros.id_libro,libros.nombre_libro,editorial.nombre_editorial,
@@ -468,9 +554,18 @@ class Admin extends CI_Controller {
             $this->load->view('listarAdminLibros',$data);
         }
     }
+    else
+    {
+        redirect('login');
+    }
+    }
     
     public function filtrarPorBusquedaEditorial()
     {
+        $user = $this->session->user;
+        $pass = $this->session->pass;
+        if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
+        {
         $this->load->model('admin_model');
       /*  $sql = $this->db->query("
         SELECT libros.id_libro,libros.nombre_libro,editorial.nombre_editorial,
@@ -528,9 +623,18 @@ class Admin extends CI_Controller {
             $this->load->view('listarAdminLibros',$data);
         }
     }
+    else
+    {
+        redirect('login');
+    }
+    }
 
     public function filtrarPorBusquedaMaterial()
     {
+        $user = $this->session->user;
+        $pass = $this->session->pass;
+        if(isset($user)&&!empty($user)&&isset($pass)&&!empty($pass))
+        {
         $this->load->model('admin_model');
       /*  $sql = $this->db->query("
         SELECT libros.id_libro,libros.nombre_libro,editorial.nombre_editorial,
@@ -587,6 +691,11 @@ class Admin extends CI_Controller {
             ];
             $this->load->view('listarAdminLibros',$data);
         }
+    }
+    else
+    {
+        redirect('login');
+    }
     }
 
 

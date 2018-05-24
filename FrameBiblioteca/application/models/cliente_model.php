@@ -216,14 +216,51 @@ class Cliente_Model extends CI_Model {
        return true;
     }
 
-    public function updateDevuelto($idpres,$cant)
+    public function updateDevuelto($idpres,$rut,$cant)
     {
-       
-       $this->db->where('id_prestamo',$idpres);
-       $this->db->update('prestamos',array('id_disp_pres'=>1,'cantidad_prestamo'=>$cant-1));
+       if($cant==2)
+       {
+        $this->db->where('id_prestamo',$idpres);
+        $this->db->where('rut_prestamo',$rut);
+        $this->db->update('prestamos',array('id_disp_pres'=>1,'cantidad_prestamo'=>1));
+       }
+       else if($cant==1)
+       {
+        $this->db->where('id_prestamo',$idpres);
+        $this->db->where('rut_prestamo',$rut);
+        $this->db->update('prestamos',array('id_disp_pres'=>1,'cantidad_prestamo'=>0));
+       }
+      
        
        return 1;
     }
+
+    public function updateCant()
+    {
+       
+    
+       $this->db->update('prestamos',array('cantidad_prestamo'=>2));
+       
+       return 1;
+    }
+
+    public function updateDevueltoR($cant)
+    {
+       
+        if($cant==2)
+        {
+       
+         $this->db->update('prestamos',array('cantidad_prestamo'=>1));
+        }
+        else if($cant==1)
+        {
+         
+         $this->db->update('prestamos',array('cantidad_prestamo'=>0));
+        }
+       
+       
+       return 1;
+     }
 
     public function updateDevueltoLibro($idlibro)
     {
@@ -246,6 +283,27 @@ class Cliente_Model extends CI_Model {
            
             $q->free_result();
             return $row->idlibroprestado;
+
+        }
+        else
+        {
+          return 0;
+        }
+    }
+
+    public function retornarRut($id)
+    {
+        $this->db->where('id_prestamo',$id);
+        $q = $this->db->get('prestamos');
+        $data = $q->result_array();
+
+        if($q->num_rows()>0)
+        {
+           
+            foreach($q->result() as $row)
+           
+            $q->free_result();
+            return $row->rut_prestamo;
 
         }
         else
